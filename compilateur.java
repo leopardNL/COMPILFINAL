@@ -1,56 +1,42 @@
-
-    
-    
-    public class interference {
-        
-        Sommet a, b;
-        
-        public interference(Sommet a, Sommet b)
-        {
-            this.a = a;
-            this.b = b;
-        }
-        
-        public interference(){
-            a=null;
-            b=null;
-        }
-    }
-    
-    public class sommet {
-        String name;
-        int color;
-        
-        public sommet(String name)
-        {
-            this.name = name;
-            this.color = 0;
-        }
-        public sommet(String name, int color)
-        {
-            this.name = name;
-            this.color = color;
-        }
-    }
-    
-    public class preference {
-        
-        String a, b;
-        
-        public preference(String a, String b)
-        {
-            this.a = a;
-            this.b = b;
-        }
-    }
+import java.util.ArrayList;
 
 
-public class final{
-    public sommet[] compilateur (sommet[] sommet, interference[] inter, preference[] pref, int k) {
+
+
+
+
+
+
+
+public class test {
+
+	
+	public static void main(String[] args){
+		
+		sommet[] sommet = new sommet[3];
+		for(int i=0; i<3; i++)
+		{
+		sommet[i] = new sommet(i);
+		}
+		interference[] inter = new interference[3];
+		inter[0] = new interference(sommet[0], sommet[1]);
+		inter[1] = new interference(sommet[1], sommet[2]);
+		inter[2] = new interference(sommet[0], sommet[2]);
+		preference[] pref = new preference[1];
+		pref[0] = new preference(sommet[0], sommet[2]);
+		sommet = compilateur(sommet, inter, pref, 3);
+		for(int i=0; i<3;i++)
+		{
+			System.out.println ("sommet : " + sommet[i].name + " couleur : " + sommet[i].color);
+		}
+	}
+	
+	public static sommet[] compilateur (sommet[] sommet, interference[] inter, preference[] pref, int k) {
         int i = 0;
         interference nminter = new interference();
         interference[] inter3;
         sommet[] som2 = new sommet[sommet.length - 1] ;
+        sommet[] somRep = new sommet[sommet.length] ;
         boolean trouve=false;
         while( !trouve && i<sommet.length )
         {
@@ -70,7 +56,7 @@ public class final{
                 inter3= new interference[inter.length - compter(sommet[i],inter)];
                 while(j<inter.length){
                     nminter=inter[j];
-                    if(nminter.a!=sommet[i].name && nminter.b!=sommet[i].name){
+                    if(nminter.a.name !=sommet[i].name && nminter.b.name !=sommet[i].name){
                         inter3[l]=nminter;
                         l+=1;	
                     }
@@ -86,7 +72,7 @@ public class final{
                     sommet[y+1] = som2[y];
                 }
 
-                return colorier(i, sommet, inter, pref, k);
+                somRep = colorier(i, sommet, inter, pref, k);
                 
                 
                 
@@ -103,8 +89,8 @@ public class final{
         if(!trouve){
             int max=0;
             int numSom=0;
-            for(int i=0;i<sommet.length;i++){
-                if(compter(sommet[y],inter) > max)
+            for(i=0;i<sommet.length;i++){
+                if(compter(sommet[i],inter) > max)
                 {
                     max = compter(sommet[i],inter);
                     numSom=i;
@@ -125,7 +111,7 @@ public class final{
             inter3= new interference[inter.length - compter(sommet[i],inter)];
             while(j<inter.length){
                 nminter=inter[j];
-                if(nminter.a!=sommet[i].name && nminter.b!=sommet[i].name){
+                if(nminter.a.name!=sommet[i].name && nminter.b.name!=sommet[i].name){
                     inter3[l]=nminter;
                     l+=1;
                 }
@@ -140,11 +126,11 @@ public class final{
             {
                 sommet[y+1] = som2[y];
             }
-            return sommet;
+            somRep = sommet;
             
         }
+        return somRep;
     }
-}
 
     
     
@@ -156,28 +142,25 @@ public class final{
     
     
     
-    
-    
-    
-    
-    public sommet[] colorier(int i,sommet[] sommet, interference[] inter, preference[] pref, int k)
+    public static sommet[] colorier(int i,sommet[] sommet, interference[] inter, preference[] pref, int k)
     {
         if(sommet.length == 1)
         {
-            sommet[i]=1;
+            sommet[i].color=1;
         }
         else
         {
-            ArrayList<int> ListeColor;
+            ArrayList<Integer> ListeColor;
+            ListeColor = null;
             for(int y=0; y<inter.length; y++)
             {
                 if(inter[y].a.name==sommet[i].name)
                 {
-                    if (ListeColor.existing(inter[y].b.color))
+                    if (!ListeColor.contains(inter[y].b.color))
                         ListeColor.add(inter[y].b.color);
                 }
                 else if (inter[y].b.name==sommet[i].name){
-                    if (ListeColor.existing(inter[y].a.color))
+                    if (!ListeColor.contains(inter[y].a.color))
                         ListeColor.add(inter[y].a.color);
 
                 }
@@ -186,7 +169,7 @@ public class final{
             
             for (int j=1; j<=k ; i++){
             
-                if (!ListeColor.existing(j)){
+                if (!ListeColor.contains(j)){
                     sommet[i].color=j;
                 }
             }
@@ -198,13 +181,17 @@ public class final{
         
     }
     
-    public static void main(String[] args){
-        
-    }
     
-    public int compter(sommet a, interference[] b)
+    public static int compter(sommet a, interference[] b)
     {
-        return 0;
+        int n = 0;
+        for(int i = 0; i<b.length;i++)
+        {
+        	if (a.name!=b[i].a.name && a.name!=b[i].b.name)
+        	{
+        		n++;
+        	}
+        }
+        return n;
     }
 }
-
