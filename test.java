@@ -14,7 +14,8 @@ public class test {
 
 
 	public static void main(String[] args){
-		
+		System.out.println ("la couleur 0 représente le spill");
+		System.out.println ("il y a 3 essais, le graphe du cours avec 3 couleurs différentes, le graphe du cours avec 2 couleurs différentes, et un graphe complet à 4 sommets et 4 couleurs");
 		sommet[] sommet = new sommet[6];
 		for(int i=0; i<6; i++)
 		{
@@ -34,6 +35,35 @@ public class test {
 		for(int i=0; i<6;i++)
 		{
 			System.out.println ("sommet : " + sommet[i].name + " couleur : " + sommet[i].color);
+		}
+		System.out.println ("nouvel essai");
+		sommet = compilateur(sommet, inter, pref, 2);
+		for(int i=0; i<6;i++)
+		{
+			System.out.println ("sommet : " + sommet[i].name + " couleur : " + sommet[i].color);
+		}
+		
+		sommet[] sommet2 = new sommet[4];
+		for(int i=0; i<4; i++)
+		{
+		sommet2[i] = new sommet(i);
+		}
+		
+		interference[] inter2 = new interference[6];
+		inter2[0] = new interference(sommet2[0], sommet2[1]);
+		inter2[1] = new interference(sommet2[0], sommet2[2]);
+		inter2[2] = new interference(sommet2[1], sommet2[2]);
+		inter2[3] = new interference(sommet2[1], sommet2[3]);
+		inter2[4] = new interference(sommet2[0], sommet2[3]);
+		inter2[5] = new interference(sommet2[2], sommet2[3]);
+		
+		preference[] pref2 = new preference[1];
+		pref[0] = new preference(sommet2[0], sommet2[2]);
+		sommet2 = compilateur(sommet2, inter2, pref2, 4);
+		System.out.println ("nouvel essai");
+		for(int i=0; i<4;i++)
+		{
+			System.out.println ("sommet : " + sommet2[i].name + " couleur : " + sommet2[i].color);
 		}
 	}
 	
@@ -133,7 +163,7 @@ public class test {
             {
                 sommet[y] = som2[y];
             }
-            for(int y=i; y<som2.length + 1;y++)
+            for(int y=i; y<som2.length;y++)
             {
                 sommet[y+1] = som2[y];
             }
